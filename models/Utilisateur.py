@@ -9,7 +9,7 @@ class Role(Enum):
 
 class Utilisateur:
     def __init__(self, email: str, nom: str, prenom: str, role: Role):
-        self.id = None  # Sera généré par MongoDB
+        self.id = None  
         self.email = email
         self.nom = nom
         self.prenom = prenom
