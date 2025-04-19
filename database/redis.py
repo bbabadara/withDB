@@ -2,7 +2,7 @@ import redis
 import json
 from typing import Optional, Any
 from datetime import timedelta
-
+#mettre les type pour tous les fonctions 
 class RedisCache:
     def __init__(self, host="localhost", port=6379, db=0):
         self.redis_client = redis.Redis(host=host, port=port, db=db, decode_responses=True)
