@@ -11,7 +11,7 @@ class MongoDB:
     def close(self):
         self.client.close()
 
-# Exemple  :
+# Exemple 
 # db = MongoDB()
 # etudiants_collection = db.get_collection("etudiants")
 

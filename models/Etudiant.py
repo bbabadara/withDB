@@ -15,9 +15,13 @@ class Etudiant:
 
     @property
     def moyenne(self) -> float:
-        if not self.notes:
+        try:
+            if not self.notes or not isinstance(self.notes, dict):
+                return 0.0
+            return sum(self.notes.values()) / len(self.notes) if len(self.notes) > 0 else 0.0
+        except (AttributeError, TypeError):
+            # En cas d'erreur inattendue, retourner 0
             return 0.0
-        return sum(self.notes.values()) / len(self.notes)
 
     def ajouter_note(self, matiere: str, note: float) -> bool:
         if not 0 <= note <= 20:
@@ -46,21 +50,31 @@ class Etudiant:
             telephone=data["telephone"],
             classe=data["classe"]
         )
-        etudiant.notes = data.get("notes", {})
+        # Assurer que notes est toujours un dictionnaire
+        notes_data = data.get("notes", {})
+        if isinstance(notes_data, list):
+            # Si les notes sont sous forme de liste, créer un dictionnaire avec des indices numériques comme clés
+            etudiant.notes = {f"Matière {i+1}": note for i, note in enumerate(notes_data) if isinstance(note, (int, float))}
+        else:
+            etudiant.notes = notes_data
         etudiant.date_creation = data.get("date_creation", datetime.now())
         etudiant.date_modification = data.get("date_modification", datetime.now())
         if "_id" in data:
             etudiant.id = str(data["_id"])
         return etudiant
 
-    @staticmethod
-    def valider_telephone(telephone: str) -> bool:
-        pattern = r"^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"
-        return bool(re.match(pattern, telephone))
+  
 
     def valid_notes(self):
-        return all(0 <= note <= 20 for note in self.notes.values())
+        try:
+            if not isinstance(self.notes, dict):
+                return False
+            return all(0 <= note <= 20 for note in self.notes.values())
+        except (AttributeError, TypeError):
+            return False
 
+
+    @staticmethod
     def valider_telephone(self, tel):
         return tel.startswith('77') or tel.startswith('78') or tel.startswith('76') and len(tel) == 9 and tel.isdigit()
 

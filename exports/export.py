@@ -7,7 +7,7 @@ def exporter_etudiants(format="csv"):
    
     collection = mdb.get_collection("etudiants")
 
-    etudiants = list(collection.find({}, {"_id": 0}))  # Récupérer les étudiants (sans l'ID MongoDB)
+    etudiants = list(collection.find({}, {"_id": 0}))  
     
     if not etudiants:
         print("Aucun étudiant trouvé.")
